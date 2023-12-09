@@ -10,33 +10,80 @@ function exibirMenu(){
         "6- Sair" 
     )
 }
+const vagas = []
 
-const vacancies = []
+function listarVagas() {
+const vagasEmTexto = vagas.reduce((textoFinal, vaga, indice) =>{
+      textoFinal += indice + ". "
+      textoFinal += vaga.nome
+      textoFinal += " (" + vaga.candidatos.length + " candidatos)\n"
+      return textoFinal
+}, "")
+  
+    alert(vagasEmTexto)
+}
 
-function getAllJobs(){
-    for (let i = 0; i < vacancies.length; index++) {
-        prompt("Vagas existentes = \n" + vacancies[i].nome +
-        "Descrição: \n" + vacancies[i].description +
-        "Data de expiração da vagas: \n" + vacancies[i].limitDate)
+function novaVaga() {
+  const nome = prompt("Informe um nome para a vaga:")
+    const descricao = prompt("Informe um descrição para a vaga:")
+ const dataLimite = prompt("Informe um data limite (dd/mm/aaaa) para a vaga:")
+
+ const confirmacao = confirm(
+     "Deseja criar uma nova vaga com essas informações?\n" +
+      "Nome: " + nome + "\nDescrição: " + descricao + "\nData limite: " + dataLimite
+    )
+  
+    if (confirmacao) {
+      const novaVaga = { nome, descricao, dataLimite, candidatos: [] }
+      vagas.push(novaVaga)
+      alert("Vaga criada.")
     }
 }
 
-function newVacancies(){
-    const vacanci = {}
-    vacanci.index =
-    vacanci.name = prompt("Digite o nome da vaga: ")
-    vacanci.description = prompt("Digite uma descrição da vaga: ")
-    vacanci.limitDate = prompt("Digite a data de expirarção da vaga: ")
+function exibirVaga() {
+const indice = prompt("Informe o índice da vaga que deseja exibir:")
+const vaga = vagas[indice]
+  
+const candidatosEmTexto = vaga.candidatos.reduce((textoFinal, candidato) => textoFinal + "\n - " + candidato, "")
+    alert(
+      "Vaga nº " + indice +
+      "\nNome: " + vaga.nome +
+      "\nDescrição: " + vaga.descricao +
+      "\nData limite: " + vaga.dataLimite +
+      "\nQuantidade de candidatos: " + vaga.candidatos.length +
+      "\nCandidatos inscritos:" + candidatosEmTexto
+    )
+}
 
-    const confirmation = ("Salvar essa vaga ? \n" + vacanci.name + 
-    "Descrição da vaga: \n" + vacanci.description +
-    "Data de expirção da vaga: \n" + vacanci.limitDate)
-
-    if(confirmation){
-        vacancies.push(vacanci)
+function inscreverCandidato() {
+const candidato = prompt("Informe o nome do(a) candidato(a):")
+const indice = prompt("Informe o índice da vaga para a qual o(a) candidato(a) deseja se inscrever:")
+const vaga = vagas[indice]
+  
+const confirmacao = confirm(
+      "Deseja inscrever o candidato " + candidato + " na vaga " + indice + "?\n" +
+      "Nome: " + vaga.nome + "\nDescrição: " + vaga.descricao + "\nData limite: " + vaga.dataLimite
+)
+    if (confirmacao) {
+      vaga.candidatos.push(candidato)
+      alert("Inscrição realizada")
     }
 }
 
+function excluirVaga() {
+const indice = prompt("Informe o índice da vaga que deseja excluir:")
+const vaga = vagas[indice]
+  
+    const confirmacao = confirm(
+      "Tem certeza que deseja excluir a vaga " + indice + "?\n" +
+      "Nome: " + vaga.nome + "\nDescrição: " + vaga.descricao + "\nData limite: " + vaga.dataLimite
+    )
+  
+    if (confirmacao) {
+      vagas.splice(indice, 1)
+      alert("Vaga excluída.")
+    }
+}
 
 function execution(){
     let options = "";
@@ -45,22 +92,22 @@ do {
 
     switch (options) {
         case "1":
-
+            listarVagas()
         break
         case "2":
-            newVacancies()
+            novaVaga()
         break
 
         case "3":
-
+            exibirVaga()
         break
 
         case "4":
-
+            inscreverCandidato()
         break
 
         case "5":
-
+            excluirVaga()
         break
         
         case "6":
